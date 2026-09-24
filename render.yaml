@@ -2,6 +2,7 @@ services:
   - type: web
     name: ai-data-agent-api
     runtime: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/health
@@ -29,8 +30,9 @@ services:
       - key: REQUESTS_PER_HOUR
         value: "20"
 
-  - type: static
+  - type: web
     name: ai-data-agent-ui
+    runtime: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
