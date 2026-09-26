@@ -115,18 +115,6 @@ Use the actual database name in the `GRANT CONNECT` statement. Put **only** the 
 
 The backend also accepts the original lowercase Neon environment names for local compatibility. The examples use the new `DB_*` names consistently.
 
-## Hobby deployment
-
-The recommended hobby setup is a Render Python web service for the API, a Render static site for `frontend/`, and a separate Neon demo database. The repository includes [render.yaml](render.yaml) as a starting Blueprint. Check each provider's current quotas and model pricing before publishing. A free Render web service sleeps after idle time, and its local filesystem is ephemeral; a download may disappear after a restart. See [Render Free](https://render.com/docs/free), [static sites](https://render.com/docs/static-sites), [Neon pricing](https://neon.com/pricing), and [OpenAI API pricing](https://openai.com/api/pricing/).
-
-1. Seed the demo database manually and create the viewer role as above. Do not put the seed credential in Render.
-2. Push the repository without `.env`, `.venv`, `frontend/node_modules`, `frontend/dist`, or runtime artifacts.
-3. In Render, choose **New > Blueprint**, connect the repository, and select `render.yaml`. Enter the secret values when prompted: `OPENAI_API_KEY`, `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `FRONTEND_ORIGIN`, `VITE_API_BASE_URL`, and optionally `VITE_SOURCE_URL`. Python 3.12 is required.
-4. After Render creates both services, copy the assigned URLs. Set the static site's `VITE_API_BASE_URL` to the API URL, and set the API's `FRONTEND_ORIGIN` to the exact static-site URL. Trigger a frontend redeploy after changing `VITE_API_BASE_URL` because Vite embeds it at build time.
-5. Test `GET /api/health`, one SQL question, a blocked write request, an ETL export/download, a follow-up transformation, and the UI on a phone. Test again after the backend sleeps and wakes.
-6. Set a modest OpenAI API project budget/alert. The in-process request cap is a backstop, not a billing guarantee.
-
-The 15-minute anonymous session and artifact cleanup are process-local. This matches one Render web instance and ephemeral storage. If the service is later scaled to multiple instances, move session/artifact ownership to shared storage or use sticky routing; do not assume a session exists on every instance.
 
 ## Verification
 
