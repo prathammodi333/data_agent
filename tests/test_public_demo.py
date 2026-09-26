@@ -467,7 +467,7 @@ def test_api_validation_and_contract(monkeypatch):
         "error": None,
     })
     client = TestClient(app)
-    assert client.get("/api/health").json() == {"status": "ok", "revision": "artifact-source-priority-7"}
+    assert client.get("/api/health").json() == {"status": "ok"}
     assert client.post("/api/chat", json={"message": "  "}).status_code == 422
     assert client.post("/api/chat", json={"message": "Fetch https://example.org"}).status_code == 200
     response = client.post("/api/chat", json={"message": "How many payment methods?"})
