@@ -59,7 +59,7 @@ class ChatResponse(BaseModel):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "revision": "artifact-source-priority-7"}
+    return {"status": "ok"}
 
 
 def _set_session_cookie(response: Response, session_id: str, request: Request) -> None:
